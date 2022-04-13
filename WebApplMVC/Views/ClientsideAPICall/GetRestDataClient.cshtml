@@ -1,0 +1,151 @@
+﻿
+@{
+    ViewData["Title"] = "Catalog";
+}
+
+<h1>Catalog</h1>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+ 
+<style>
+
+span{
+    display:inline-block;
+    width: 30%;
+    height: 500px;
+    border: 1px solid #dddddd80;
+    margin: 10px;
+    padding: 15px;
+    float: left;
+    position: initial;
+    text-align: center;
+}
+</style>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+
+
+<script>
+
+
+
+
+    $(document).ready(function(){
+        $("#btnPost").click(function(){
+            $.ajax({
+                url:'https://localhost:44372/api/Customer/ViewAllProducts',
+                method:'GET',
+                contentType:'application/json',
+                success:function(result){
+                   // console.log(result);
+
+                   for(i=0;i<result.length;i++)
+                   {
+                          $("#tblPost").append("<span>"+
+                    
+                            "<p>" + result[i].productNo + "</p>" +
+                            "<p>" + result[i].productCategory + "</p>" +
+                            "<h4>" + result[i].productName + "</h4>" +
+                            "<p>" + result[i].productDescription + "</p>" + 
+                            "<p>" +result[i].productPrice +"$</p>"+
+                            //+"<button class='btn btn-light' id='btnPost'> Add </button>"
+                            "<form>"+
+                                  "<label for='size'>size :   </label>"+
+                                  "<select id=' "+ result[i].productNo +"'>"+
+                                    "<option value='XS'> XS </option>"+
+                                    "<option value='S'> S </option>"+
+                                    "<option value='M'> M </option>"+
+                                    "<option value='L'> L </option>"+
+                                    "<option value='XL'> XL </option>"+
+                                  "</select>"+ "   "+
+                                  "<button class=\"btn btn-light\" id =" +result[i].productNo + "> add </button>"+
+                                 // "<input type='submit' value='add'/>"+
+                                "</form>"
+                            +"</span>")
+                   }                
+                },
+                error:function(err){
+                    console.log(err);
+                }
+            })           
+        })
+        
+       
+        $("#btnPhotos").click(function(){
+            
+            $.ajax({
+                url:'https://jsonplaceholder.typicode.com/photos',
+                method:'GET',
+                contentType:'application/json',
+                success:function(pics){
+                    
+                    for(i=0;i<pics.length;i++)
+                    {
+                        $("#tblPhotos").append("<tr>" +
+                        "<td>" + pics[i].albumId + "</td>"  + 
+                        "<td>" + pics[i].id + "</td>"  + 
+                        "<td>" + pics[i].title + "</td>"  + 
+                        "<td><img src='" + pics[i].thumbnailUrl + "'/></td>"  + 
+                        
+                        + "</tr>")
+                    }
+                },
+                error:function(err){
+
+                }
+            })
+      
+        })
+
+        $("#btnUsers").click(function(){
+            $.ajax({
+                url:'https://jsonplaceholder.typicode.com/users',
+                method:'GET',
+                contentType:'application/json',
+                success:function(result){
+                    for(i=0;i<result.length;i++)
+                    {
+                        $("#tblusers").append("<tr>" + 
+                            "<td>" + result[i].name+ "</td>" + 
+                            "<td>" + result[i].email + "</td>" + 
+                            "<td>" + result[i].address.city + "</td>" + 
+                            "<td>" + result[i].address.geo.lat + "</td>" + 
+                            "<td>" + result[i].company.name+ "</td>" + 
+                            "<td>" + result[i].company.catchPhrase + "</td>" +                        
+                        
+                        + "</tr>")
+
+
+                    }
+                },
+                error:function(errInfo){
+
+                }
+            })
+        })
+        
+        
+    })
+
+    
+</script>
+
+<button class="btn btn-light" id="btnPost"> Catalog </button>
+@*<button class="btn btn-light" id="btnPhotos"> Get Photos </button>
+<button class="btn-light" id="btnUsers"> Get Users </button>*@
+
+@*<table class="table table-bordered" id="tblPost">
+    <tr>
+    <th>PRODUCT No</th>
+    <th>CATEGORY</th>
+    <th>PRODUCT NAME</th>
+    <th>DESCRIPTION</th>
+    <th>PRICE</th>
+  </tr>
+</table>*@
+<div id="tblPost" ></div>
+
+
+<table class="table table-borderless" id="tblPhotos"></table>
+<table class="table table-striped" id="tblusers"></table>
+
+
